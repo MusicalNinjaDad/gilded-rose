@@ -35,6 +35,19 @@ class GildedRose(object):
                     if item.quality < 50:
                         item.quality = item.quality + 1
 
+    def __eq__(self, _other) -> bool:
+        try:
+            equal = [
+                all([
+                    myitem.name == otheritem.name,
+                    myitem.sell_in == otheritem.sell_in,
+                    myitem.quality == otheritem.quality
+                    ])
+                for myitem, otheritem in zip(self.items, _other.items)
+            ]
+        except AttributeError:
+            return False
+        return all(equal)
 
 class Item:
     def __init__(self, name, sell_in, quality):
