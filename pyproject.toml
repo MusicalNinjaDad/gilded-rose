@@ -21,3 +21,6 @@ include = ["gildedrose_console"]
 
 [project.optional-dependencies]
 test=['pytest']
+
+[tool.pytest.ini_options]
+xfail_strict=true
