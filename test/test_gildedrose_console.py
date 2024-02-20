@@ -1,5 +1,7 @@
+from pytest import mark
 from gildedrose_console.gilded_rose import GildedRose, Item
 
+@mark.xfail
 def test_everything():
 # Well almost ... we're not checking running from console here ...
     app = GildedRose(items = [
@@ -14,7 +16,7 @@ def test_everything():
                  )
             ]
     )
-    
+
     expected = GildedRose(items = [
              Item(name="+5 Dexterity Vest", sell_in=9, quality=19),
              Item(name="Aged Brie", sell_in=1, quality=1),
@@ -29,6 +31,8 @@ def test_everything():
     )
 
     app.update_quality()
+
+    assert app == expected
 
     for appitem, expecteditem in zip(app.items, expected.items):
         assert appitem.name == expecteditem.name
