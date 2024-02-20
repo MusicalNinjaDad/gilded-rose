@@ -12,7 +12,8 @@ def app():
                 name="Backstage passes to a TAFKAL80ETC concert", 
                 sell_in=15, 
                 quality=20
-                )
+                ),
+            Item(name="Conjured Mana Cake", sell_in=3, quality=6)
         ]
 )
 
@@ -27,7 +28,8 @@ def expected():
                 name="Backstage passes to a TAFKAL80ETC concert", 
                 sell_in=14, 
                 quality=21
-                )
+                ),
+            Item(name="Conjured Mana Cake", sell_in=2, quality=4)
         ]
 )
 

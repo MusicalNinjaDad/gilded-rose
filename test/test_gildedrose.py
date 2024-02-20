@@ -16,6 +16,10 @@ from gildedrose_console.gilded_rose import GildedRose, Item
             [Item(name="Backstage passes to a TAFKAL80ETC concert", sell_in=-1, quality=0)],
             id="Backstage passes"
         ),
+        pytest.param(
+            [Item(name="Conjured Mana Cake", sell_in=2, quality=1)],
+            id="Conjured"
+        ),
     ]
 )
 def test_qualitynevernegative(items):
