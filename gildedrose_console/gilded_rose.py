@@ -33,7 +33,7 @@ class GildedRose(object):
                         item.quality = item.quality - item.quality
                 else:
                     item.quality = item.quality + qualityincrement
-                    
+
             if item.quality < 0:
                 item.quality = 0
             if item.quality > 50 and item.name != "Sulfuras, Hand of Ragnaros":
@@ -46,12 +46,13 @@ class GildedRose(object):
                     myitem.name == otheritem.name,
                     myitem.sell_in == otheritem.sell_in,
                     myitem.quality == otheritem.quality
-                    ])
+                ])
                 for myitem, otheritem in zip(self.items, _other.items)
             ]
         except AttributeError:
             return False
         return all(equal)
+
 
 class Item:
     def __init__(self, name, sell_in, quality):
@@ -64,21 +65,20 @@ class Item:
 
 
 if __name__ == "__main__":
-    print ("OMGHAI!")
-    app = GildedRose(items = [
-             Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
-             Item(name="Aged Brie", sell_in=2, quality=0),
-             Item(name="Elixir of the Mongoose", sell_in=5, quality=7),
-             Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80),
-             Item(
-                 name="Backstage passes to a TAFKAL80ETC concert", 
-                 sell_in=15, 
-                 quality=20
-                 ),
-             Item(name="Conjured Mana Cake", sell_in=3, quality=6)
-            ]
+    print("OMGHAI!")
+    app = GildedRose(items=[
+        Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
+        Item(name="Aged Brie", sell_in=2, quality=0),
+        Item(name="Elixir of the Mongoose", sell_in=5, quality=7),
+        Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80),
+        Item(
+            name="Backstage passes to a TAFKAL80ETC concert",
+            sell_in=15,
+            quality=20
+        ),
+        Item(name="Conjured Mana Cake", sell_in=3, quality=6)
+    ]
     )
 
     app.update_quality()
     input()
-    
