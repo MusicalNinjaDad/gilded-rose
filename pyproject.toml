@@ -1,0 +1,23 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'GildedRose_Console'
+description = ''
+readme = 'README.md'
+license = {text = 'MIT'}
+authors = [{name = 'Mike Foster'}]
+
+dynamic = ['version']
+requires-python = '>=3.6'
+
+[tool.setuptools.dynamic]
+version = {file = '__version__'}
+
+[tool.setuptools.packages.find]
+where = ['.']
+include = ["gildedrose_console"]
+
+[project.optional-dependencies]
+test=['pytest']
