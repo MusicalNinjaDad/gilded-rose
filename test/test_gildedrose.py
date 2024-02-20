@@ -53,3 +53,13 @@ def test_qualitymax50(items):
     gr = GildedRose(items=items)
     gr.update_quality()
     assert gr.items[0].quality <= 50
+
+@pytest.mark.xfail
+def test_conjured():
+    gr = GildedRose(items=[
+            Item(name="Conjured Mana Cake", sell_in=3, quality=6)
+        ])
+    gr.update_quality()
+    assert gr == GildedRose(items=[
+            Item(name="Conjured Mana Cake", sell_in=3, quality=4)
+        ]) 
