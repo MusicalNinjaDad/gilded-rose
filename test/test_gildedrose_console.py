@@ -14,6 +14,7 @@ def test_everything():
                  )
             ]
     )
+    
     expected = GildedRose(items = [
              Item(name="+5 Dexterity Vest", sell_in=9, quality=19),
              Item(name="Aged Brie", sell_in=1, quality=1),
@@ -26,9 +27,10 @@ def test_everything():
                  )
             ]
     )
+
+    app.update_quality()
+
     for appitem, expecteditem in zip(app.items, expected.items):
         assert appitem.name == expecteditem.name
         assert appitem.sell_in == expecteditem.sell_in
         assert appitem.quality == expecteditem.quality
- 
-    # app.update_quality()
