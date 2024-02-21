@@ -134,3 +134,25 @@ def test_qualitychangesfaster(items,expected_age):
     gr = GildedRose(items=items)
     gr.update_quality()
     assert gr.items[0].quality == expected_age
+
+@pytest.mark.parametrize(
+    "items",
+    [
+        pytest.param(
+            [Item(name="Sulfuras, Hand of Ragnaros", sell_in=2, quality=80)],
+            id="Sell in 2"
+        ),
+        pytest.param(
+            [Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80)],
+            id="Sell in 0"
+        ),
+        pytest.param(
+            [Item(name="Sulfuras, Hand of Ragnaros", sell_in=-2, quality=80)],
+            id="Sell in -2"
+        ),
+    ]
+)
+def test_sulfurasalways80(items):
+    gr = GildedRose(items=items)
+    gr.update_quality()
+    assert gr.items[0].quality == 80
