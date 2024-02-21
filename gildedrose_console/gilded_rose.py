@@ -15,6 +15,7 @@ class GildedRose(object):
             if item.name.startswith("Conjured"):
                 qualityincrement = 2
             elif item.name.startswith("Backstage pass"):
+                qualityincrement = 1
                 if item.sell_in < 11:
                     qualityincrement = 2
                 if item.sell_in < 6:
@@ -22,6 +23,8 @@ class GildedRose(object):
                 if item.sell_in < 0:
                     item.quality = 0
                     qualityincrement = 0
+            elif item.name.startswith("Sulfuras"):
+                qualityincrement = 0
             else:
                 qualityincrement = 1
 
@@ -29,8 +32,7 @@ class GildedRose(object):
                 qualityincrement = qualityincrement * 2
 
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.name != "Sulfuras, Hand of Ragnaros":
-                    item.quality = item.quality - qualityincrement
+                item.quality = item.quality - qualityincrement
             else:
                 item.quality = item.quality + qualityincrement
 
