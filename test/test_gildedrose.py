@@ -85,17 +85,17 @@ def test_conjured():
         pytest.param(
             [Item(name="Aged Brie", sell_in=2, quality=10)],
             11,
-            id="Aged Brie"
+            id="Sell in 2"
         ),
         pytest.param(
             [Item(name="Aged Brie", sell_in=0, quality=10)],
             12,
-            id="Aged Brie"
+            id="Sell in 0"
         ),
         pytest.param(
             [Item(name="Aged Brie", sell_in=-2, quality=10)],
             12,
-            id="Aged Brie"
+            id="Sell in -2"
         ),
     ]
 )
