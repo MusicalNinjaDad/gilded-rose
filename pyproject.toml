@@ -24,3 +24,8 @@ test=['pytest']
 
 [tool.pytest.ini_options]
 xfail_strict=true
+
+[tool.coverage.run]
+branch=true
+omit=['test_*']
+dynamic_context = "test_function"
