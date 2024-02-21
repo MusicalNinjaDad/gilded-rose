@@ -17,6 +17,9 @@ class GildedRose(object):
             else:
                 qualityincrement = 1
 
+            if item.sell_in < 0:
+                qualityincrement = qualityincrement * 2
+
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
                 if item.name != "Sulfuras, Hand of Ragnaros":
                     item.quality = item.quality - qualityincrement
@@ -27,15 +30,6 @@ class GildedRose(object):
                         item.quality = item.quality + qualityincrement
                     if item.sell_in < 6:
                         item.quality = item.quality + qualityincrement
-            if item.sell_in < 0:
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if item.name != "Sulfuras, Hand of Ragnaros":
-                            item.quality = item.quality - qualityincrement
-                    else:
-                        item.quality = 0  # This appears unneccesary now we explicitly check for negative qualities
-                else:
-                    item.quality = item.quality + qualityincrement
 
             if item.quality < 0:
                 item.quality = 0
