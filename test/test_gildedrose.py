@@ -79,6 +79,7 @@ def test_conjured():
     ])
 
 
+
 @pytest.mark.parametrize(
     ("items","expected_age"),
     [
@@ -100,6 +101,36 @@ def test_conjured():
     ]
 )
 def test_agedbrieincreases(items,expected_age):
+    gr = GildedRose(items=items)
+    gr.update_quality()
+    assert gr.items[0].quality == expected_age
+
+@pytest.mark.parametrize(
+    ("items","expected_age"),
+    [
+        pytest.param(
+            [Item(name="+5 Dexterity Vest", sell_in=0, quality=10)],
+            8,
+            id="Dex Vest sell in 0"
+        ),
+        pytest.param(
+            [Item(name="+5 Dexterity Vest", sell_in=-1, quality=10)],
+            8,
+            id="Dex Vest sell in -1"
+        ),
+        pytest.param(
+            [Item(name="Conjured Mana Cake", sell_in=0, quality=10)],
+            6,
+            id="conjured sell in 0"
+        ),
+        pytest.param(
+            [Item(name="Conjured Mana Cake", sell_in=-1, quality=10)],
+            6,
+            id="conjured sell in -1"
+        ),
+    ]
+)
+def test_qualitychangesfaster(items,expected_age):
     gr = GildedRose(items=items)
     gr.update_quality()
     assert gr.items[0].quality == expected_age
