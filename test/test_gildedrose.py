@@ -44,7 +44,7 @@ def test_qualitynevernegative(items):
         ),
         pytest.param(
             [Item(name="Aged Brie", sell_in=-1, quality=50)],
-            id="Aged Brie"
+            id="Aged Brie - overdue"
         ),
         pytest.param(
             [Item(name="Backstage passes to a TAFKAL80ETC concert",
