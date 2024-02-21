@@ -19,7 +19,7 @@ to sell the item
 
 Pretty simple, right? Well this is where it gets interesting:
 
-- Once the sell by date has passed, Quality degrades twice as fast
+- Once the sell by date has passed, Quality changes twice as fast
 - The Quality of an item is never negative
 - "Aged Brie" actually increases in Quality the older it gets
 - The Quality of an item is never more than 50

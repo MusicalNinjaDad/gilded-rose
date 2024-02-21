@@ -43,6 +43,10 @@ def test_qualitynevernegative(items):
             id="Aged Brie"
         ),
         pytest.param(
+            [Item(name="Aged Brie", sell_in=-1, quality=50)],
+            id="Aged Brie"
+        ),
+        pytest.param(
             [Item(name="Backstage passes to a TAFKAL80ETC concert",
                   sell_in=2, quality=50)],
             id="Backstage passes +3"
@@ -73,3 +77,29 @@ def test_conjured():
     assert gr == GildedRose(items=[
         Item(name="Conjured Mana Cake", sell_in=2, quality=4)
     ])
+
+
+@pytest.mark.parametrize(
+    ("items","expected_age"),
+    [
+        pytest.param(
+            [Item(name="Aged Brie", sell_in=2, quality=10)],
+            11,
+            id="Aged Brie"
+        ),
+        pytest.param(
+            [Item(name="Aged Brie", sell_in=0, quality=10)],
+            12,
+            id="Aged Brie"
+        ),
+        pytest.param(
+            [Item(name="Aged Brie", sell_in=-2, quality=10)],
+            12,
+            id="Aged Brie"
+        ),
+    ]
+)
+def test_agedbrieincreases(items,expected_age):
+    gr = GildedRose(items=items)
+    gr.update_quality()
+    assert gr.items[0].quality == expected_age
