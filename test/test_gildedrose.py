@@ -35,7 +35,7 @@ def test_qualitynevernegative(items):
     [
         pytest.param(
             Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80),
-            marks=pytest.mark.xfail(reason="Sulfuras quality always 80"),
+            marks=pytest.mark.xfail(reason="Sulfuras quality always 80", strict=True),
             id="Sulfuras"
         ),
         pytest.param(
