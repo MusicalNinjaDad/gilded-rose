@@ -12,7 +12,6 @@ class GildedRose(object):
             if item.name != "Sulfuras, Hand of Ragnaros":
                 item.sell_in = item.sell_in - 1
 
-
             if item.name.startswith("Conjured"):
                 qualityincrement = 2
             else:
@@ -34,7 +33,7 @@ class GildedRose(object):
                         if item.name != "Sulfuras, Hand of Ragnaros":
                             item.quality = item.quality - qualityincrement
                     else:
-                        item.quality = item.quality - item.quality
+                        item.quality = 0  # This appears unneccesary now we explicitly check for negative qualities
                 else:
                     item.quality = item.quality + qualityincrement
 
