@@ -14,6 +14,14 @@ class GildedRose(object):
 
             if item.name.startswith("Conjured"):
                 qualityincrement = 2
+            elif item.name.startswith("Backstage pass"):
+                if item.sell_in < 11:
+                    qualityincrement = 2
+                if item.sell_in < 6:
+                    qualityincrement = 3
+                if item.sell_in < 0:
+                    item.quality = 0
+                    qualityincrement = 0
             else:
                 qualityincrement = 1
 
@@ -25,11 +33,6 @@ class GildedRose(object):
                     item.quality = item.quality - qualityincrement
             else:
                 item.quality = item.quality + qualityincrement
-                if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                    if item.sell_in < 11:
-                        item.quality = item.quality + qualityincrement
-                    if item.sell_in < 6:
-                        item.quality = item.quality + qualityincrement
 
             if item.quality < 0:
                 item.quality = 0
