@@ -1,40 +1,46 @@
 # -*- coding: utf-8 -*-
 
+from collections import defaultdict
+
+
 class GildedRose(object):
 
     def __init__(self, items):
         self.items = items
 
     def update_quality(self):
+        
+        def calculate_backstagepass(s, q):
+            qualityincrement = 1
+            if s < 11:
+                qualityincrement = 2
+            if s < 6:
+                qualityincrement = 3
+            if s < 0:
+                qualityincrement = -q
+            return q + qualityincrement
+
+        specific_calculators = {
+            "Conjured": lambda s,q: q - (2 if s >= 0 else 4),
+            "Sulfuras": lambda s,q: q,
+            "Aged Brie": lambda s,q: q + (1 if s >= 0 else 2),
+            "Backstage pass": calculate_backstagepass
+        }
+        
+        default_calculator = lambda s,q: q - (1 if s >= 0 else 2)
+
         for item in self.items:
 
             # Update sell_in first, so we know how old it is now
             if item.name != "Sulfuras, Hand of Ragnaros":
                 item.sell_in = item.sell_in - 1
 
-            if item.name.startswith("Conjured"):
-                qualityincrement = 2
-            elif item.name.startswith("Backstage pass"):
-                qualityincrement = 1
-                if item.sell_in < 11:
-                    qualityincrement = 2
-                if item.sell_in < 6:
-                    qualityincrement = 3
-                if item.sell_in < 0:
-                    item.quality = 0
-                    qualityincrement = 0
-            elif item.name.startswith("Sulfuras"):
-                qualityincrement = 0
+            for itemtype, calculator in specific_calculators.items():
+                if item.name.startswith(itemtype):
+                    item.quality = calculator(item.sell_in, item.quality)
+                    break
             else:
-                qualityincrement = 1
-
-            if item.sell_in < 0:
-                qualityincrement = qualityincrement * 2
-
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                item.quality = item.quality - qualityincrement
-            else:
-                item.quality = item.quality + qualityincrement
+                item.quality = default_calculator(item.sell_in, item.quality)
 
             if item.quality < 0:
                 item.quality = 0
