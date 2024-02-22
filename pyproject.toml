@@ -1,34 +1,34 @@
 [build-system]
-requires = ['setuptools']
-build-backend = 'setuptools.build_meta'
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = 'GildedRose_Console'
-description = ''
-readme = 'README.md'
-license = {text = 'MIT'}
-authors = [{name = 'Mike Foster'}]
+name = "GildedRose_Console"
+description = ""
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Mike Foster"}]
 
-dynamic = ['version']
-requires-python = '>=3.7'
+dynamic = ["version"]
+requires-python = ">=3.7"
 
 [tool.setuptools.dynamic]
-version = {file = '__version__'}
+version = {file = "__version__"}
 
 [tool.setuptools.packages.find]
-where = ['.']
+where = ["."]
 include = ["gildedrose_console"]
 
 [project.optional-dependencies]
-test=['pytest']
-dev=['ruff']
+test=["pytest"]
+dev=["ruff"]
 
 [tool.pytest.ini_options]
 xfail_strict=true
 
 [tool.coverage.run]
 branch=true
-omit=['test_*']
+omit=["test_*"]
 dynamic_context = "test_function"
 
 [tool.ruff]
@@ -37,9 +37,9 @@ format.skip-magic-trailing-comma = false
 format.quote-style = "double"
 
 [tool.ruff.lint]
-select = ['ALL']
+select = ["ALL"]
 ignore = [
-    'D1', # Missing Doc-Strings
+    "D1", # Missing Doc-Strings
     "D203", # We want D211 - no blank line before class docstring
     "D212", # We want D213 - Multiline docstrings start on second line 
     "ANN101", # Type annotation for `self`
