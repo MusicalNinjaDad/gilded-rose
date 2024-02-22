@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 class Item:
     def __init__(self, name, sell_in, quality):  # noqa: ANN001, ANN204
         self.name = name
