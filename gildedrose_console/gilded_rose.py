@@ -9,7 +9,7 @@ class GildedRose(object):
         self.items = items
 
     def update_quality(self):
-        
+
         def calculate_backstagepass(s, q):
             qualityincrement = 1
             if s < 11:
@@ -21,13 +21,14 @@ class GildedRose(object):
             return q + qualityincrement
 
         specific_calculators = {
-            "Conjured": lambda s,q: q - (2 if s >= 0 else 4),
-            "Sulfuras": lambda s,q: q,
-            "Aged Brie": lambda s,q: q + (1 if s >= 0 else 2),
-            "Backstage pass": calculate_backstagepass
+            "Conjured": lambda s, q: q - (2 if s >= 0 else 4),
+            "Sulfuras": lambda s, q: q,
+            "Aged Brie": lambda s, q: q + (1 if s >= 0 else 2),
+            "Backstage pass": calculate_backstagepass,
         }
-        
-        default_calculator = lambda s,q: q - (1 if s >= 0 else 2)
+
+        def default_calculator(s, q):
+            return q - (1 if s >= 0 else 2)
 
         for item in self.items:
 
@@ -50,11 +51,13 @@ class GildedRose(object):
     def __eq__(self, _other) -> bool:
         try:
             equal = [
-                all([
-                    myitem.name == otheritem.name,
-                    myitem.sell_in == otheritem.sell_in,
-                    myitem.quality == otheritem.quality
-                ])
+                all(
+                    [
+                        myitem.name == otheritem.name,
+                        myitem.sell_in == otheritem.sell_in,
+                        myitem.quality == otheritem.quality,
+                    ]
+                )
                 for myitem, otheritem in zip(self.items, _other.items)
             ]
         except AttributeError:
@@ -74,18 +77,17 @@ class Item:
 
 if __name__ == "__main__":
     print("OMGHAI!")
-    app = GildedRose(items=[
-        Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
-        Item(name="Aged Brie", sell_in=2, quality=0),
-        Item(name="Elixir of the Mongoose", sell_in=5, quality=7),
-        Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80),
-        Item(
-            name="Backstage passes to a TAFKAL80ETC concert",
-            sell_in=15,
-            quality=20
-        ),
-        Item(name="Conjured Mana Cake", sell_in=3, quality=6)
-    ]
+    app = GildedRose(
+        items=[
+            Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
+            Item(name="Aged Brie", sell_in=2, quality=0),
+            Item(name="Elixir of the Mongoose", sell_in=5, quality=7),
+            Item(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80),
+            Item(
+                name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20
+            ),
+            Item(name="Conjured Mana Cake", sell_in=3, quality=6),
+        ]
     )
 
     app.update_quality()
