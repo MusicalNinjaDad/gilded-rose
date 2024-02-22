@@ -1,4 +1,5 @@
 import pytest
+
 from gildedrose_console.gilded_rose import GildedRose, Item
 
 
@@ -12,11 +13,11 @@ def app():
         Item(
             name="Backstage passes to a TAFKAL80ETC concert",
             sell_in=15,
-            quality=20
+            quality=20  # noqa: COM812
         ),
-        Item(name="Conjured Mana Cake", sell_in=3, quality=6)
-    ]
-    )
+        Item(name="Conjured Mana Cake", sell_in=3, quality=6)  # noqa: COM812
+    ]  # noqa: COM812
+    )  # fmt: skip
 
 
 @pytest.fixture
@@ -29,11 +30,11 @@ def expected():
         Item(
             name="Backstage passes to a TAFKAL80ETC concert",
             sell_in=14,
-            quality=21
+            quality=21  # noqa: COM812
         ),
-        Item(name="Conjured Mana Cake", sell_in=2, quality=4)
-    ]
-    )
+        Item(name="Conjured Mana Cake", sell_in=2, quality=4)  # noqa: COM812
+    ]  # noqa: COM812
+    )  # fmt: skip
 
 
 def test_everything(app, expected):

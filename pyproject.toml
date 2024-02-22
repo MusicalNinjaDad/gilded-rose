@@ -21,6 +21,7 @@ include = ["gildedrose_console"]
 
 [project.optional-dependencies]
 test=['pytest']
+dev=['ruff']
 
 [tool.pytest.ini_options]
 xfail_strict=true
@@ -29,3 +30,30 @@ xfail_strict=true
 branch=true
 omit=['test_*']
 dynamic_context = "test_function"
+
+[tool.ruff]
+line-length = 120
+format.skip-magic-trailing-comma = false
+format.quote-style = "double"
+
+[tool.ruff.lint]
+select = ['ALL']
+ignore = [
+    'D1', # Missing Doc-Strings
+    "D203", # We want D211 - no blank line before class docstring
+    "D212", # We want D213 - Multiline docstrings start on second line 
+    "ANN101", # Type annotation for `self`
+    "ANN202", # Return type annotation for private functions
+    "T", # `Print` statements
+    ] 
+flake8-pytest-style.fixture-parentheses = false
+flake8-annotations.mypy-init-return = true
+
+
+[tool.ruff.lint.per-file-ignores]
+# Additional ignores for tests 
+"**/test_*.py" = [
+    "INP001", # Missing __init__.py
+    "ANN", # Missing type annotations
+    "S101", # Use of `assert`
+    ]
