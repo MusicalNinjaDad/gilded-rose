@@ -16,6 +16,17 @@ def qnotnegative(s: int, q: int) -> tuple[int,int]:
 def maxq(s: int, q: int) -> tuple[int, int]:
     return (s, min(q,GildedRose.MAX_QUALITY))
 
+def calculate_backstagepass(s: int, q: int) -> tuple[int,int]:
+    s -= 1  # Update sell_in first, so we know how old it is now
+    qualityincrement = 1
+    if s < 11:  # noqa: PLR2004
+        qualityincrement = 2
+    if s < 6:  # noqa: PLR2004
+        qualityincrement = 3
+    if s < 0:
+        qualityincrement = -q
+    return (s, q + qualityincrement)
+
 class GildedRose:
     MAX_QUALITY = 50
 
@@ -23,17 +34,6 @@ class GildedRose:
         self.items = items
 
     def update_quality(self) -> None:
-        def calculate_backstagepass(s, q):  # noqa: ANN001
-            s -= 1  # Update sell_in first, so we know how old it is now
-            qualityincrement = 1
-            if s < 11:  # noqa: PLR2004
-                qualityincrement = 2
-            if s < 6:  # noqa: PLR2004
-                qualityincrement = 3
-            if s < 0:
-                qualityincrement = -q
-            return (s, q + qualityincrement)
-
         specific_calculators = {
             "Conjured": lambda s, q: (s - 1, q - (2 if s > 0 else 4)),
             "Sulfuras": lambda s, q: (s, q),
