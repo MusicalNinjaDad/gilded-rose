@@ -10,6 +10,8 @@ class Item:
     def __repr__(self):  # noqa: ANN204
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)  # noqa: UP031
 
+def qnotnegative(s: int, q: int) -> tuple[int,int]:
+    return (s, max(q,0))
 
 class GildedRose:
     MAX_QUALITY = 50
@@ -17,7 +19,7 @@ class GildedRose:
     def __init__(self, items: Item):
         self.items = items
 
-    def update_quality(self) -> None:  # noqa: C901
+    def update_quality(self) -> None:
         def calculate_backstagepass(s, q):  # noqa: ANN001
             s -= 1  # Update sell_in first, so we know how old it is now
             qualityincrement = 1
@@ -47,10 +49,7 @@ class GildedRose:
             else:
                 item.sell_in, item.quality = default_calculator(item.sell_in, item.quality)
 
-            if item.quality < 0:
-                item.quality = 0
-            if item.quality > GildedRose.MAX_QUALITY and item.name != "Sulfuras, Hand of Ragnaros":
-                item.quality = 50
+            item.sell_in, item.quality = qnotnegative(item.sell_in, item.quality)
 
     def __eq__(self, _other: object) -> bool:
         try:
