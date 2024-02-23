@@ -46,6 +46,9 @@ def calculate_brie(s: int, q: int) -> tuple[int,int]:
         q += 2
     return (s, q)
 
+def default_calculator(s: int, q: int) -> tuple[int,int]:
+    return (s - 1, q - (1 if s > 0 else 2))
+
 class GildedRose:
     MAX_QUALITY = 50
 
@@ -59,9 +62,6 @@ class GildedRose:
             "Aged Brie": calculate_brie,
             "Backstage pass": calculate_backstagepass,
         }
-
-        def default_calculator(s, q):  # noqa: ANN001
-            return (s - 1, q - (1 if s > 0 else 2))
 
         for item in self.items:
             for itemtype, calculator in specific_calculators.items():
