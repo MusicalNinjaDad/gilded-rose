@@ -1,6 +1,9 @@
 #! /usr/bin/env python
 
 
+from collections import OrderedDict
+
+
 class Item:
     def __init__(self, name, sell_in, quality):  # noqa: ANN001, ANN204
         self.name = name
@@ -10,44 +13,77 @@ class Item:
     def __repr__(self):  # noqa: ANN204
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)  # noqa: UP031
 
-def qnotnegative(s: int, q: int) -> tuple[int,int]:
-    return (s, max(q,0))
+
+def qnotnegative(s: int, q: int) -> tuple[int, int]:
+    return (s, max(q, 0))
+
 
 def maxq(s: int, q: int) -> tuple[int, int]:
-    return (s, min(q,GildedRose.MAX_QUALITY))
+    return (s, min(q, GildedRose.MAX_QUALITY))
+
 
 def decrement_s(s: int, q: int) -> tuple[int, int]:
-    return (s-1, q)
+    return (s - 1, q)
 
-def calculate_backstagepass(s: int, q: int) -> tuple[int,int]:
+
+def calculate_backstagepass(s: int, q: int) -> tuple[int, int]:
     s, q = decrement_s(s, q)  # Update sell_in first, so we know how old it is now
-    qualityincrement = 1
-    if s < 11:  # noqa: PLR2004
-        qualityincrement = 2
-    if s < 6:  # noqa: PLR2004
-        qualityincrement = 3
-    if s < 0:
-        qualityincrement = -q
-    return (s, q + qualityincrement)
+    rules = OrderedDict(
+        {
+            10: 1,
+            5: 2,
+            -1: 3,
+            None: -q,  # fixed at zero quality
+        },
+    )
+    return generic_calculator(s, q, rules)
 
-def calculate_conjured(s: int, q: int) -> tuple[int,int]:
+
+def calculate_conjured(s: int, q: int) -> tuple[int, int]:
     s, q = decrement_s(s, q)
-    if s > 0:
-        q -= 2
-    else:
-        q -= 4
-    return (s, q)
+    rules = OrderedDict(
+        {
+            0: -2,
+            None: -4,
+        },
+    )
+    return generic_calculator(s, q, rules)
 
-def calculate_brie(s: int, q: int) -> tuple[int,int]:
+
+def calculate_brie(s: int, q: int) -> tuple[int, int]:
     s, q = decrement_s(s, q)
-    if s > 0:
-        q += 1
-    else:
-        q += 2
-    return (s, q)
+    rules = OrderedDict(
+        {
+            0: 1,
+            None: 2,
+        },
+    )
+    return generic_calculator(s, q, rules)
 
-def default_calculator(s: int, q: int) -> tuple[int,int]:
-    return (s - 1, q - (1 if s > 0 else 2))
+
+def default_calculator(s: int, q: int) -> tuple[int, int]:
+    s, q = decrement_s(s, q)
+    rules = OrderedDict(
+        {
+            0: -1,
+            None: -2,
+        },
+    )
+    return generic_calculator(s, q, rules)
+
+
+def generic_calculator(s: int, q: int, rules: OrderedDict[int, int]) -> tuple[int, int]:
+    for s_threshold, q_increment in rules.items():
+        try:
+            if s > s_threshold:
+                q += q_increment
+                return (s, q)
+        except TypeError:  # Compare against None  # noqa: PERF203 - will be better in 3.11
+            q += q_increment
+            return (s, q)
+    missing_default = "No match found in {rules}, try adding a None entry at the end"
+    raise ValueError(missing_default)
+
 
 class GildedRose:
     MAX_QUALITY = 50
