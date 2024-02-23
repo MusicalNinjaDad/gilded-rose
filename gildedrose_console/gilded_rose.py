@@ -38,6 +38,14 @@ def calculate_conjured(s: int, q: int) -> tuple[int,int]:
         q -= 4
     return (s, q)
 
+def calculate_brie(s: int, q: int) -> tuple[int,int]:
+    s, q = decrement_s(s, q)
+    if s > 0:
+        q += 1
+    else:
+        q += 2
+    return (s, q)
+
 class GildedRose:
     MAX_QUALITY = 50
 
@@ -48,7 +56,7 @@ class GildedRose:
         specific_calculators = {
             "Conjured": calculate_conjured,
             "Sulfuras": lambda s, q: (s, q),
-            "Aged Brie": lambda s, q: (s - 1, q + (1 if s > 0 else 2)),
+            "Aged Brie": calculate_brie,
             "Backstage pass": calculate_backstagepass,
         }
 
