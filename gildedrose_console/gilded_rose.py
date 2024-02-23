@@ -30,6 +30,14 @@ def calculate_backstagepass(s: int, q: int) -> tuple[int,int]:
         qualityincrement = -q
     return (s, q + qualityincrement)
 
+def calculate_conjured(s: int, q: int) -> tuple[int,int]:
+    s, q = decrement_s(s, q)
+    if s > 0:
+        q -= 2
+    else:
+        q -= 4
+    return (s, q)
+
 class GildedRose:
     MAX_QUALITY = 50
 
@@ -38,7 +46,7 @@ class GildedRose:
 
     def update_quality(self) -> None:
         specific_calculators = {
-            "Conjured": lambda s, q: (s - 1, q - (2 if s > 0 else 4)),
+            "Conjured": calculate_conjured,
             "Sulfuras": lambda s, q: (s, q),
             "Aged Brie": lambda s, q: (s - 1, q + (1 if s > 0 else 2)),
             "Backstage pass": calculate_backstagepass,
