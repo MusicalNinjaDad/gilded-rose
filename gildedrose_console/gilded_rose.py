@@ -79,7 +79,7 @@ def generic_calculator(s: int, q: int, rules: OrderedDict[int, int]) -> tuple[in
                 q += q_increment
                 return (s, q)
         except TypeError:  # Compare against None  # noqa: PERF203 - will be better in 3.11
-            q += q_increment
+            q += q_increment # need q_increment so can't use try ... for ... except
             return (s, q)
     missing_default = "No match found in {rules}, try adding a None entry at the end"
     raise ValueError(missing_default)
