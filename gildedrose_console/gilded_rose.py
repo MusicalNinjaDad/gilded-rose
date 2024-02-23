@@ -13,6 +13,9 @@ class Item:
 def qnotnegative(s: int, q: int) -> tuple[int,int]:
     return (s, max(q,0))
 
+def maxq(s: int, q: int) -> tuple[int, int]:
+    return (s, min(q,GildedRose.MAX_QUALITY))
+
 class GildedRose:
     MAX_QUALITY = 50
 
@@ -50,6 +53,8 @@ class GildedRose:
                 item.sell_in, item.quality = default_calculator(item.sell_in, item.quality)
 
             item.sell_in, item.quality = qnotnegative(item.sell_in, item.quality)
+            if item.name != "Sulfuras, Hand of Ragnaros":
+                item.sell_in, item.quality = maxq(item.sell_in, item.quality)
 
     def __eq__(self, _other: object) -> bool:
         try:
