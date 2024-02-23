@@ -16,8 +16,11 @@ def qnotnegative(s: int, q: int) -> tuple[int,int]:
 def maxq(s: int, q: int) -> tuple[int, int]:
     return (s, min(q,GildedRose.MAX_QUALITY))
 
+def decrement_s(s: int, q: int) -> tuple[int, int]:
+    return (s-1, q)
+
 def calculate_backstagepass(s: int, q: int) -> tuple[int,int]:
-    s -= 1  # Update sell_in first, so we know how old it is now
+    s, q = decrement_s(s, q)  # Update sell_in first, so we know how old it is now
     qualityincrement = 1
     if s < 11:  # noqa: PLR2004
         qualityincrement = 2
