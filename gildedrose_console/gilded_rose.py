@@ -26,59 +26,16 @@ def decrement_s(s: int, q: int) -> tuple[int, int]:
     return (s - 1, q)
 
 
-def calculate_backstagepass(s: int, q: int) -> tuple[int, int]:
-    s, q = decrement_s(s, q)  # Update sell_in first, so we know how old it is now
-    rules = OrderedDict(
-        {
-            10: 1,
-            5: 2,
-            -1: 3,
-            None: None,  # fixed at zero quality
-        },
-    )
-    return generic_calculator(s, q, rules)
-
-
-def calculate_conjured(s: int, q: int) -> tuple[int, int]:
-    s, q = decrement_s(s, q)
-    rules = OrderedDict(
-        {
-            0: -2,
-            None: -4,
-        },
-    )
-    return generic_calculator(s, q, rules)
-
-
-def calculate_brie(s: int, q: int) -> tuple[int, int]:
-    s, q = decrement_s(s, q)
-    rules = OrderedDict(
-        {
-            0: 1,
-            None: 2,
-        },
-    )
-    return generic_calculator(s, q, rules)
-
-
-def default_calculator(s: int, q: int) -> tuple[int, int]:
-    s, q = decrement_s(s, q)
-    rules = OrderedDict(
-        {
-            0: -1,
-            None: -2,
-        },
-    )
-    return generic_calculator(s, q, rules)
-
-
 def generic_calculator(s: int, q: int, rules: OrderedDict[int, int]) -> tuple[int, int]:
+    s, q = decrement_s(s, q)
     for s_threshold, q_increment in rules.items():
         if s_threshold is None or s > s_threshold:
             try:
                 q += q_increment
             except TypeError:  # q_increment is None
                 q = 0
+            s, q = qnotnegative(s, q)
+            s, q = maxq(s, q)
             return (s, q)
     missing_default = "No match found in {rules}, try adding a None entry at the end"
     raise ValueError(missing_default)
@@ -91,24 +48,29 @@ class GildedRose:
         self.items = items
 
     def update_quality(self) -> None:
-        specific_calculators = {
-            "Conjured": calculate_conjured,
-            "Sulfuras": lambda s, q: (s, q),
-            "Aged Brie": calculate_brie,
-            "Backstage pass": calculate_backstagepass,
+        rulesets = {
+            "Conjured": OrderedDict({0: -2, None: -4}),
+            "Aged Brie": OrderedDict({0: 1, None: 2}),
+            "Backstage pass": OrderedDict(
+                {
+                    10: 1,
+                    5: 2,
+                    -1: 3,
+                    None: None,  # fixed at zero quality
+                },
+            ),
         }
 
-        for item in self.items:
-            for itemtype, calculator in specific_calculators.items():
-                if item.name.startswith(itemtype):
-                    item.sell_in, item.quality = calculator(item.sell_in, item.quality)
-                    break
-            else:
-                item.sell_in, item.quality = default_calculator(item.sell_in, item.quality)
+        genericrules = OrderedDict({0: -1, None: -2})
 
-            item.sell_in, item.quality = qnotnegative(item.sell_in, item.quality)
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in, item.quality = maxq(item.sell_in, item.quality)
+        for item in self.items:
+            if not item.name.startswith("Sulfuras"):
+                for itemtype, ruleset in rulesets.items():
+                    if item.name.startswith(itemtype):
+                        item.sell_in, item.quality = generic_calculator(item.sell_in, item.quality, ruleset)
+                        break
+                else:
+                    item.sell_in, item.quality = generic_calculator(item.sell_in, item.quality, genericrules)
 
     def __eq__(self, _other: object) -> bool:
         try:
