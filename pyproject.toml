@@ -10,7 +10,7 @@ license = {text = "MIT"}
 authors = [{name = "Mike Foster"}]
 
 dynamic = ["version"]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 
 [tool.setuptools.dynamic]
 version = {file = "__version__"}
