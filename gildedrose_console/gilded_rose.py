@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+
 class Item:
     def __init__(self, name, sell_in, quality):  # noqa: ANN001, ANN204
         self.name = name
@@ -18,6 +19,7 @@ class GildedRose:
 
     def update_quality(self) -> None:  # noqa: C901
         def calculate_backstagepass(s, q):  # noqa: ANN001
+            s -= 1  # Update sell_in first, so we know how old it is now
             qualityincrement = 1
             if s < 11:  # noqa: PLR2004
                 qualityincrement = 2
@@ -25,29 +27,25 @@ class GildedRose:
                 qualityincrement = 3
             if s < 0:
                 qualityincrement = -q
-            return q + qualityincrement
+            return (s, q + qualityincrement)
 
         specific_calculators = {
-            "Conjured": lambda s, q: q - (2 if s >= 0 else 4),
-            "Sulfuras": lambda s, q: q,  # noqa: ARG005
-            "Aged Brie": lambda s, q: q + (1 if s >= 0 else 2),
+            "Conjured": lambda s, q: (s - 1, q - (2 if s > 0 else 4)),
+            "Sulfuras": lambda s, q: (s, q),
+            "Aged Brie": lambda s, q: (s - 1, q + (1 if s > 0 else 2)),
             "Backstage pass": calculate_backstagepass,
         }
 
         def default_calculator(s, q):  # noqa: ANN001
-            return q - (1 if s >= 0 else 2)
+            return (s - 1, q - (1 if s > 0 else 2))
 
         for item in self.items:
-            # Update sell_in first, so we know how old it is now
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-
             for itemtype, calculator in specific_calculators.items():
                 if item.name.startswith(itemtype):
-                    item.quality = calculator(item.sell_in, item.quality)
+                    item.sell_in, item.quality = calculator(item.sell_in, item.quality)
                     break
             else:
-                item.quality = default_calculator(item.sell_in, item.quality)
+                item.sell_in, item.quality = default_calculator(item.sell_in, item.quality)
 
             if item.quality < 0:
                 item.quality = 0
