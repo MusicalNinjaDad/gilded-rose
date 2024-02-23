@@ -33,7 +33,7 @@ def calculate_backstagepass(s: int, q: int) -> tuple[int, int]:
             10: 1,
             5: 2,
             -1: 3,
-            None: -q,  # fixed at zero quality
+            None: None,  # fixed at zero quality
         },
     )
     return generic_calculator(s, q, rules)
@@ -74,12 +74,11 @@ def default_calculator(s: int, q: int) -> tuple[int, int]:
 
 def generic_calculator(s: int, q: int, rules: OrderedDict[int, int]) -> tuple[int, int]:
     for s_threshold, q_increment in rules.items():
-        try:
-            if s > s_threshold:
+        if s_threshold is None or s > s_threshold:
+            try:
                 q += q_increment
-                return (s, q)
-        except TypeError:  # Compare against None  # noqa: PERF203 - will be better in 3.11
-            q += q_increment # need q_increment so can't use try ... for ... except
+            except TypeError:  # q_increment is None
+                q = 0
             return (s, q)
     missing_default = "No match found in {rules}, try adding a None entry at the end"
     raise ValueError(missing_default)
